@@ -14,12 +14,14 @@ async def start_delayed_consumer(
     js: JetStreamContext,
     bot: Bot,
     subject: str,
+    stream: str,
     durable_name: str
 ) -> None:
     consumer = DelayedMessageConsumer(
         nc=nc,
         js=js,
         subject=subject,
+        stream=stream,
         durable_name=durable_name,
         bot=bot
     )

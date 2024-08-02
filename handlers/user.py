@@ -7,7 +7,7 @@ from fluentogram import TranslatorRunner
 from nats.js.client import JetStreamContext
 
 from states.states import NatsTestSG
-from utils.services.dealy_service.publisher import dalay_message_deletion
+from services.dealy_service.publisher import dalay_message_deletion
 
 user_router = Router()
 

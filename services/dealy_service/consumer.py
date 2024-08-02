@@ -38,7 +38,7 @@ class DelayedMessageConsumer:
             manual_ack=True
         )
 
-    async def on_message(self, msg: Msg) -> None:
+    async def on_message(self, msg: Msg):
         # Получаем из заголовков сообщения время отправки и время задержки
         sent_time = datetime.fromtimestamp(float(msg.headers.get('Tg-Delayed-Msg-Timestamp')), tz=timezone.utc)
         delay = int(msg.headers.get('Tg-Delayed-Msg-Delay'))
@@ -60,4 +60,4 @@ class DelayedMessageConsumer:
     async def unsubscribe(self) -> None:
         if self.stream_sub:
             await self.stream_sub.unsubscribe()
-            logger.info('Unsubscribed')
+            logger.info('Consumer unsubscribed')
