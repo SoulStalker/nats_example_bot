@@ -13,3 +13,8 @@ successfully-saved = Your text has been successfully saved to NATS FSM-storage
                      Now you can get data from the storage by sending the /read command
 
 text-only = Please send text messages only
+
+will-delete = This message will be deleted after { $delay ->
+                [one] { $delay } second
+               *[other] { $delay } seconds
+              }

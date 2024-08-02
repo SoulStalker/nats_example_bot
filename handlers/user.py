@@ -4,9 +4,13 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
 from fluentogram import TranslatorRunner
 
+from nats.js.client import JetStreamContext
+
 from states.states import NatsTestSG
+from utils.services.dealy_service.publisher import dalay_message_deletion
 
 user_router = Router()
+
 
 # Хендлер срабатывает на команду /start
 @user_router.message(CommandStart())
@@ -63,3 +67,23 @@ async def process_any_message(message: Message, i18n: TranslatorRunner, state: F
 async def process_callback_query(callback: CallbackQuery, i18n: TranslatorRunner):
     await callback.answer(text=i18n.button.pressed())
 
+
+# Хендлер будет срабатывать на команду /del
+@user_router.message(Command('del'))
+async def process_send_and_del_message(
+        message: Message,
+        i18n: TranslatorRunner,
+        js: JetStreamContext,
+        delay_del_subject: str
+) -> None:
+
+    delay = 3
+    msg: Message = await message.answer(text=i18n.will.delete(delay=delay))
+
+    await dalay_message_deletion(
+        js=js,
+        chat_id=msg.chat.id,
+        message_id=msg.message_id,
+        subject=delay_del_subject,
+        delay=delay
+    )
